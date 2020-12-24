@@ -11,3 +11,4 @@ part 'view_state.dart';
 part 'view_model.dart';
 part 'list_view_model.dart';
 part 'refresh_view_model.dart';
+part 'refresh_view_new_model.dart';

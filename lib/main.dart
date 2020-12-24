@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:referesh_model/list_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -104,6 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            FlatButton(onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (_){
+                return ListPage();
+              },),);
+            }, child: Text('下一个页面'))
           ],
         ),
       ),

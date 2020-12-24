@@ -3,10 +3,10 @@ part of view_models;
 /// 多页列表视图模型
 ///
 /// 用于维护多页列表数据及状态，并提供下拉刷新、上拉加载方法
-abstract class RefreshViewModel<T> extends ListViewModel<T> {
+abstract class RefreshViewNewModel<T> extends ListViewModel<T> {
   bool userSuccess;
 
-  RefreshViewModel({ViewState viewState, bool success: false})
+  RefreshViewNewModel({ViewState viewState, bool success: false})
       : super(viewState: viewState) {
     userSuccess = success;
   }
@@ -19,9 +19,6 @@ abstract class RefreshViewModel<T> extends ListViewModel<T> {
 
   /// 当前页码
   int currentPage = 1;
-
-  ///该标记用来控制是否能上啦加载更改，目前只是定义、赋值，暂未使用。
-  // bool canLoadMore = false;
 
   /// 刷新控制器
   EasyRefreshController _controller = EasyRefreshController();
@@ -39,7 +36,6 @@ abstract class RefreshViewModel<T> extends ListViewModel<T> {
       currentPage = firstPage;
       var data = await loadData(page: firstPage);
       if (data.isEmpty) {
-        // canLoadMore = false;
         if (!init) {
           controller.finishRefresh(success: true);
         }
@@ -54,7 +50,6 @@ abstract class RefreshViewModel<T> extends ListViewModel<T> {
           controller.resetLoadState();
         }
 
-        // canLoadMore = data.length > pageSize;
         if (userSuccess) {
           setSuccess();
         } else {
@@ -71,7 +66,6 @@ abstract class RefreshViewModel<T> extends ListViewModel<T> {
     } catch (e, s) {
       if (init) list.clear();
       controller.finishRefresh(success: false, noMore: true);
-      // canLoadMore = false;
       setError(e, s);
       return null;
     }
@@ -83,7 +77,6 @@ abstract class RefreshViewModel<T> extends ListViewModel<T> {
       var data = await loadData(page: ++currentPage);
       if (data.isEmpty) {
         currentPage--;
-        // refreshController.loadNoData();
         controller.finishLoad(success: true, noMore: true);
       } else {
         onDataLoaded(data);
@@ -95,6 +88,7 @@ abstract class RefreshViewModel<T> extends ListViewModel<T> {
       return data;
     } catch (e, s) {
       currentPage--;
+      // refreshController.loadFailed();
       controller.finishLoad(success: false);
 
       setError(e, s);
